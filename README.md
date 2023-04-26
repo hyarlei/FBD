@@ -14,7 +14,7 @@ Os códigos aqui presentes são divididos em pastas, cada uma abordando um tópi
 ### - Subconsultas
 ### - Criação de diagramas
 
-##Como Usar
+## Como Usar
 
 Você pode navegar pelas pastas deste repositório para encontrar exemplos e exercícios específicos.
 Para utilizar os códigos deste repositório, você precisará de um sistema de gerenciamento de banco de dados instalado em seu computador. Recomendamos utilizar PostgreSQL, que é o sistema de gerenciamento de banco de dados gratuito e de código aberto.
