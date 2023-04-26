@@ -8,11 +8,11 @@ Este repositório foi criado para pô meus códigos que estou fazendo na cadeira
 Os códigos foram escritos em SQL, a linguagem padrão para gerenciamento de banco de dados relacional. Eles foram testados em sistemas de gerenciamento de banco de dados como PostgreSQL.
 Os códigos aqui presentes são divididos em pastas, cada uma abordando um tópico específico. Alguns exemplos de tópicos abordados neste repositório incluem:
 
-###Criação e alteração de tabelas
-###Consultas básicas e avançadas
-###Junções entre tabelas
-###Subconsultas
-###Criação de diagramas
+### Criação e alteração de tabelas
+### Consultas básicas e avançadas
+### Junções entre tabelas
+### Subconsultas
+### Criação de diagramas
 
 ##Como Usar
 
