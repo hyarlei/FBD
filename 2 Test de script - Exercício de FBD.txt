@@ -1,0 +1,182 @@
+1 - Enviar o script de criação do banco de dados e inserir ao menos 5 tuplas em cada tabela.
+
+2 - Responder às consultas em SQL.
+
+Listar o nome de quem foi curtido e de quem curtiu.
+Listar os ids dos matches da 'Ana'
+Listar o nome de cada usuário juntamente com o nome de quem lhe deu match.
+Listar as pessoas que nasceram nos anos de 2000 a 2005.
+Listar o nome dos hobibies das pessoas que nasceram nos anos de 2000 a 2005.
+Listar os dados das pessoas que curtem praia e balada.
+Listar as mensagens da última semana do chat da 'Ana'
+
+==========================================================================================================================
+
+-- Criando a tabela Usuario
+CREATE TABLE Usuario (
+    id INTEGER PRIMARY KEY,
+    email TEXT,
+    dt_nasc DATE,
+    cidade TEXT,
+    bio TEXT,
+    nome TEXT,
+    genero TEXT
+);
+
+-- Inserindo tuplas na tabela Usuario
+INSERT INTO Usuario (id, email, dt_nasc, cidade, bio, nome, genero) VALUES
+(1, 'joao@gmail.com', '1990-01-01', 'São Paulo', 'Olá, meu nome é João e adoro viajar', 'João', 'M'),
+(2, 'ana@gmail.com', '1995-02-15', 'Rio de Janeiro', 'Oi, eu sou a Ana e adoro ler', 'Ana', 'F'),
+(3, 'marcos@gmail.com', '1993-11-07', 'Curitiba', 'Olá, meu nome é Marcos e gosto de esportes', 'Marcos', 'M'),
+(4, 'julia@gmail.com', '2001-05-22', 'Porto Alegre', 'Oi, meu nome é Júlia e adoro música', 'Júlia', 'F'),
+(5, 'pedro@gmail.com', '2004-08-10', 'Salvador', 'Olá, meu nome é Pedro e sou apaixonado por tecnologia', 'Pedro', 'M');
+
+
+-- Criando a tabela Usuario
+CREATE TABLE Hobbies (
+    id_hobbies INTEGER PRIMARY KEY,
+    descricao TEXT
+);
+
+-- Inserindo tuplas na tabela Hobbies
+INSERT INTO Hobbies (id_hobbies, descricao) VALUES
+(1, 'Viagem'),
+(2, 'Leitura'),
+(3, 'Esportes'),
+(4, 'Música'),
+(5, 'Tecnologia'),
+(6, 'Arte');
+
+
+-- Criando a tabela User_Hobbies
+CREATE TABLE User_Hobbies (
+    id_u INTEGER,
+    id_h INTEGER,
+    PRIMARY KEY (id_u, id_h),
+    FOREIGN KEY (id_u) REFERENCES Usuario(id),
+    FOREIGN KEY (id_h) REFERENCES Hobbies(id_hobbies)
+);
+
+-- Inserindo tuplas na tabela User_Hobbies
+INSERT INTO User_Hobbies (id_u, id_h) VALUES
+(1, 1),
+(1, 2),
+(2, 2),
+(2, 4),
+(3, 3),
+(4, 4),
+(4, 6),
+(5, 5),
+(5, 6);
+
+
+-- Criando a tabela Curtidas
+CREATE TABLE Curtidas (
+    id_u INTEGER,
+    id_u_curtiu INTEGER,
+    PRIMARY KEY (id_u, id_u_curtiu),
+    FOREIGN KEY (id_u) REFERENCES Usuario(id),
+    FOREIGN KEY (id_u_curtiu) REFERENCES Usuario(id)
+);
+
+-- Inserindo tuplas na tabela Curtidas
+INSERT INTO Curtidas (id_u, id_u_curtiu) VALUES
+(1, 2),
+(2, 1),
+(3, 1),
+(4, 5),
+(5, 4);
+
+
+-- Criando a tabela Matches
+CREATE TABLE Matches (
+    id_u1 INTEGER,
+    id_u2 INTEGER,
+    data_hora DATETIME,
+    PRIMARY KEY (id_u1, id_u2),
+    FOREIGN KEY (id_u1) REFERENCES Usuario(id),
+    FOREIGN KEY (id_u2) REFERENCES Usuario(id)
+);
+
+-- Inserindo tuplas na tabela Matches
+INSERT INTO Matches (id_u1, id_u2, data_hora) VALUES
+(1, 2, '2023-04-08 10:30:00'),
+(2, 1, '2023-04-08 10:30:00'),
+(3, 1, '2023-04-09 10:30:00'),
+(1, 5, '2023-04-09 11:00:00'),
+(5, 1, '2023-04-09 11:00:00'),
+(4, 5, '2023-04-08 11:00:00'),
+(5, 4, '2023-04-08 11:00:00'),
+(2, 4, '2023-04-09 12:00:00');
+
+
+-- Criando a tabela Chat
+CREATE TABLE Chat (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  id_emissor INT NOT NULL,
+  id_receptor INT NOT NULL,
+  mensagem TEXT NOT NULL,
+  data_hora DATETIME NOT NULL,
+  FOREIGN KEY (id_emissor) REFERENCES Usuario(id),
+  FOREIGN KEY (id_receptor) REFERENCES Usuario(id)
+);
+
+-- Inserindo tuplas na tabela Chat
+INSERT INTO Chat (id_emissor, id_receptor, mensagem, data_hora) VALUES
+(1, 2, 'Oi, tudo bem?', '2022-03-25 15:30:00'),
+(2, 1, 'Tudo sim, e contigo?', '2022-03-25 15:32:00'),
+(3, 4, 'E aí, beleza?', '2022-03-26 10:15:00'),
+(4, 3, 'Beleza demais, e você?', '2022-03-26 10:20:00'),
+(5, 6, 'Ei, como vai?', '2022-03-27 18:45:00'),
+(6, 5, 'Estou bem, obrigado!', '2022-03-27 18:50:00'),
+(1, 3, 'Bom dia, tudo tranquilo?', '2022-03-28 09:00:00'),
+(3, 1, 'Bom dia! Tudo tranquilo sim, e contigo?', '2022-03-28 09:05:00'),
+(2, 4, 'Fala meu caro, como tem passado?', '2022-03-28 14:20:00'),
+(4, 2, 'Tenho passado bem, obrigado pela preocupação!', '2022-03-28 14:25:00');
+
+
+==========================================================================================================================
+
+SELECT u1.nome AS curtido, u2.nome AS curtiu
+FROM Curtidas c
+JOIN Usuario u1 ON c.id_u = u1.id
+JOIN Usuario u2 ON c.id_u_curtiu = u2.id;
+
+
+SELECT m.id_u1, m.id_u2
+FROM Matches m
+JOIN Usuario u ON m.id_u1 = u.id OR m.id_u2 = u.id
+WHERE u.nome = 'Ana';
+
+
+SELECT u1.nome, u2.nome AS nome_match
+FROM Matches m
+JOIN Usuario u1 ON m.id_u1 = u1.id
+JOIN Usuario u2 ON m.id_u2 = u2.id;
+
+
+SELECT nome, dt_nasc
+FROM Usuario
+WHERE dt_nasc BETWEEN '2000-01-01' AND '2005-12-31';
+
+
+SELECT u.nome, h.descricao
+FROM Usuario u
+JOIN User_Hobbies uh ON u.id = uh.id_u
+JOIN Hobbies h ON uh.id_h = h.id_hobbies
+WHERE u.dt_nasc BETWEEN '2000-01-01' AND '2005-12-31';
+
+
+SELECT u.*
+FROM Usuario u
+JOIN User_Hobbies uh ON u.id = uh.id_u
+JOIN Hobbies h ON uh.id_h = h.id_hobbies
+WHERE h.descricao IN ('Praia', 'Balada');
+
+
+SELECT u.nome, c.mensagem, c.data_hora
+FROM Chat c
+JOIN Usuario u ON c.id_emissor = u.id
+WHERE c.id_receptor = (SELECT id FROM Usuario WHERE nome = 'Ana')
+  AND c.data_hora >= DATE_SUB(NOW(), INTERVAL 1 WEEK);
+
